@@ -6,12 +6,20 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "lint:fix": "vue-cli-service lint --fix",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "loader": "^2.1.1",
+    "mapbox-gl": "^0.53.1",
+    "material-design-icons-iconfont": "^4.0.5",
     "register-service-worker": "^1.6.2",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
     "vue": "^2.6.10",
+    "vue2mapbox-gl": "^0.5.50",
+    "vuetify": "^1.5.11",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
@@ -30,6 +38,7 @@
     "eslint-plugin-vue": "^5.0.0",
     "lint-staged": "^8.1.5",
     "prettier": "^1.18.2",
+    "vue-cli-plugin-rapid-viewer-setup": "0.0.1",
     "vue-template-compiler": "^2.6.10"
   },
   "gitHooks": {
