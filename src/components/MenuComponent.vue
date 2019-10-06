@@ -1,11 +1,30 @@
 <template>
   <div id="menu">
-    <data-layers :dataLayers="dataLayers" :map="map" />
+    <v-layout column fill-height justfy-space-around class="pa-4">
+      <v-flex grow>
+        <data-layers
+          :dataLayers="dataLayers"
+          :map="map"
+          @data-layers="$emit('update:data-layers', dataLayers)"
+        />
+      </v-flex>
+      <v-flex shrink class="py-2">
+        <v-btn outlined block>
+          IMPORT POLYGON
+        </v-btn>
+      </v-flex>
+      <v-flex shrink class="pb-4">
+        <v-btn outlined block @click="exportDialog = true">
+          EXPORT
+        </v-btn>
+      </v-flex>
+    </v-layout>
   </div>
 </template>
 
 <script>
 import DataLayers from './DataLayers'
+
 export default {
   name: 'map-component',
   props: {
@@ -20,10 +39,14 @@ export default {
     map: function(map) {
       this.map = map
     },
-    deep: true
+    dataLayers: function(datalayers) {
+      console.log(datalayers)
+    }
   },
   data: () => {
-    return {}
+    return {
+      exportDialog: false
+    }
   },
   components: {
     DataLayers
@@ -33,6 +56,10 @@ export default {
 
 <style>
 @import '~mapbox-gl/dist/mapbox-gl.css';
+
+#menu {
+  height: 100%;
+}
 
 .bar {
   width: 100%;

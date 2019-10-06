@@ -10,7 +10,7 @@ const dataLayers = [
       }
     ],
     type: 'datalayers',
-    'mapbox-layers': [
+    data: [
       {
         id: 'global-analysis-forecast-phy-001-024-monthly',
         type: 'raster',

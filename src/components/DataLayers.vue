@@ -1,84 +1,268 @@
 <template>
-  <div id="datalayers">
-    <v-toolbar flat>
-      <v-toolbar-title>
-        Background layers
-      </v-toolbar-title>
-    </v-toolbar>
-    <v-list two-line>
-      <v-list-tile v-for="datalayer in dataLayers" :key="datalayer.title">
-        <v-list-tile-avatar>
-          <v-switch v-model="datalayer.active" v-on:change="toggleLayers()">
-          </v-switch>
-        </v-list-tile-avatar>
-        <v-list-tile-content>
-          <v-list-tile-title>
-            {{ datalayer.title }}
-          </v-list-tile-title>
-          <v-list-tile-sub-title>
-            <div v-if="datalayer.barlegend" class="bar-wrapper">
-              <div :style="datalayer.barlegend" class="bar"></div>
-              <div class="bartext">{{ datalayer.bartext }}</div>
-            </div>
-            <div v-if="datalayer.colorlegend">
-              <div
-                v-for="i in datalayer.colorlegend"
-                :key="i.name"
-                class="color-label"
+  <div>
+    <v-layout column fill-height>
+      <v-flex xs4 align-stretch>
+        <h1 class="title">Data Layers</h1>
+        <v-expansion-panels dense focusable accordion>
+          <draggable
+            id="draggable"
+            class="draggable"
+            v-model="layers"
+            @start="drag = true"
+            @end="drag = false"
+            v-bind="{ handle: '.draghandle' }"
+          >
+            <v-expansion-panel v-for="layer in layers" :key="layer.id">
+              <v-expansion-panel-header class="pa-0">
+                <v-layout align-center justify-space-end>
+                  <v-flex>
+                    <v-icon
+                      class="ma-2 draghandle"
+                      id="dragicon"
+                      title="Drag to change map layer drawing order"
+                      small
+                      >fa-grip-vertical</v-icon
+                    >
+                  </v-flex>
+                  <v-flex xs5 class="pa-1">
+                    {{ layer.name }}
+                  </v-flex>
+                  <v-flex xs1>
+                    <v-tooltip v-if="layer.timeslider" bottom>
+                      <template v-slot:activator="{ on }">
+                        <v-icon small v-on="on">fa-clock</v-icon>
+                      </template>
+                      <span
+                        >Deze laag is tijdsafhankelijk en kan bestuurd worden
+                        met de tijdsbalk.</span
+                      >
+                    </v-tooltip>
+                  </v-flex>
+                  <v-flex xs2 @click.stop="">
+                    <v-switch
+                      class="ma-0"
+                      v-model="layer.active"
+                      @change="$emit('setLayer', layer)"
+                    />
+                  </v-flex>
+                  <v-flex>
+                    <v-icon
+                      class="ma-2"
+                      id="dragicon"
+                      title="Open details"
+                      small
+                      >fa-caret-down</v-icon
+                    >
+                  </v-flex>
+                </v-layout>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content
+                class="pa-0"
+                extra-small
+                expand-icon="fa-caret-down"
+                hide-actions
               >
-                <span class="colored-span" :style="i.color"></span>
-                <label class="ma-1">{{ i.name }}</label>
-              </div>
-            </div>
-            <div v-if="datalayer.texticonlegend">
-              <div
-                v-for="i in datalayer.texticonlegend"
-                :key="i.name"
-                class="color-label"
-              >
-                <span :style="i.style">{{ i.texticon }}</span>
-                <label class="ma-1">{{ i.name }}</label>
-              </div>
-            </div>
-          </v-list-tile-sub-title>
-        </v-list-tile-content>
-      </v-list-tile>
-    </v-list>
+                <div class="pa-2">
+                  <div class="infodiv" v-if="layer.info">
+                    <h4>Information</h4>
+                    {{ layer.info }}
+                    <v-divider />
+                  </div>
+                  <v-legend v-if="layer.legend" :layer="layer"></v-legend>
+                  <div class="opacity" v-if="layer.opacity">
+                    <h4>Transparancy: {{ 100 - layer.opacity }}%</h4>
+                    <v-slider
+                      hide-details
+                      class="pa-0 ma-0"
+                      title="transparantie"
+                      :min="1"
+                      :max="100"
+                      v-model="layer.opacity"
+                    ></v-slider>
+                    <v-divider />
+                  </div>
+                </div>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </draggable>
+        </v-expansion-panels>
+      </v-flex>
+    </v-layout>
   </div>
 </template>
 
 <script>
+import draggable from 'vuedraggable'
+import VLegend from './VLegend'
+
 export default {
-  name: 'DataLayers',
   props: {
-    dataLayers: {
+    datLayers: {
       type: Array
     },
     map: {
       type: Object
     }
   },
+  computed: {
+    layers: {
+      get() {
+        return this.dataLayers
+      },
+      set(val) {
+        this.$emit('update:data-layers', val)
+      }
+    }
+  },
+  data() {
+    return {}
+  },
+  watch: {
+    // Watch "layers". This is a switch, which can toggle a layer on or off
+    // When toggled, this watcher will activate the toggleLayers function.
+    dataLayers: {
+      deep: true,
+      handler() {
+        if (!this.layers) return
+        this.toggleLayers()
+        this.sortLayers()
+      }
+    }
+  },
   methods: {
     toggleLayers() {
-      if (this.map === null) {
-        return
-      }
       // Function to toggle the visibility and opacity of the layers.
       var vis = ['none', 'visible']
-      this.dataLayers.forEach(layer => {
-        layer['mapbox-layers'].forEach(sublayer => {
-          if (this.map.getLayer(sublayer.id) !== undefined) {
-            if (layer.active) {
-              this.map.setLayoutProperty(sublayer.id, 'visibility', vis[1])
-            } else {
-              this.map.setLayoutProperty(sublayer.id, 'visibility', vis[0])
-            }
+
+      this.layers.forEach(layer => {
+        layer.data.forEach(sublayer => {
+          if (!sublayer.id) return
+          if (layer.active) {
+            this.map.setLayoutProperty(sublayer.id, 'visibility', vis[1])
+            this.setOpacity(layer, sublayer)
+          } else {
+            this.map.setLayoutProperty(sublayer.id, 'visibility', vis[0])
           }
         })
       })
+    },
+    setOpacity(layer, sublayer) {
+      // When updating the slider, update the corresponding layer with the new opacity
+      if (layer.opacity) {
+        try {
+          var opacity = Math.max(layer.opacity * 0.01, 0.01)
+          var property
+          if (sublayer.type === 'raster') {
+            property = 'raster-opacity'
+          } else if (sublayer.type == 'fill') {
+            property = 'fill-opacity'
+          } else if (sublayer.type == 'line') {
+            property = 'line-opacity'
+          }
+          if (property) {
+            this.map.setPaintProperty(sublayer.id, property, opacity)
+          }
+        } catch (err) {
+          console.log(
+            'error setting opacity: ' + opacity + '(' + err.message + ')'
+          )
+        }
+      }
+    },
+    sortLayers() {
+      // Function to sort the layers according to their position in the menu
+      for (var i = this.layers.length - 2; i >= 0; --i) {
+        for (
+          var thislayer = 0;
+          thislayer < this.layers[i].length;
+          ++thislayer
+        ) {
+          if (this.layers[i][thislayer].id) {
+            this.map.moveLayer(this.layers[i][thislayer].id)
+          }
+        }
+      }
     }
+  },
+  components: {
+    draggable,
+    VLegend
   }
 }
 </script>
 
-<style lang="css" scoped></style>
+<style>
+.title {
+  color: white;
+}
+#dragicon {
+  margin: auto;
+}
+
+#draggable {
+  width: 100%;
+}
+
+.v-expansion-panel {
+  box-shadow: none;
+  webkit-box-shadow: none;
+}
+.fa-grip-vertical:hover {
+  color: black;
+  cursor: grab;
+}
+
+.infodiv {
+  .wordwrap {
+    white-space: pre-wrap; /* CSS3 */
+    white-space: -moz-pre-wrap; /* Firefox */
+    white-space: -pre-wrap; /* Opera <7 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    word-wrap: break-word; /* IE */
+  }
+}
+
+/* Customize the switch buttons */
+.v-input--selection-controls:not(.v-input--hide-details) .v-input__slot {
+  margin: auto;
+}
+
+.v-input--switch__track {
+  border-radius: 9px;
+  height: 16px;
+  left: 2px;
+  opacity: 0.6;
+  position: absolute;
+  right: 2px;
+  top: calc(50% - 7px);
+}
+
+.v-input--switch__thumb {
+  border-radius: 50%;
+  top: calc(50% - 7px);
+  height: 16px;
+  position: relative;
+  width: 16px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.v-input--switch.v-input--is-dirty .v-input--selection-controls__ripple,
+.v-input--switch.v-input--is-dirty .v-input--switch__thumb {
+  -webkit-transform: translate(20px, 0);
+  transform: translate(20px, 0);
+}
+
+.theme--light.v-input--switch__thumb {
+  color: #f8f8f8;
+}
+</style>

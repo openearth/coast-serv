@@ -1,23 +1,39 @@
 <template>
   <v-app id="apptemp">
-    <v-toolbar height="64px" prominent fixed>
-      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-toolbar-title>{{ appConfig.title }}</v-toolbar-title>
-    </v-toolbar>
-    <v-navigation-drawer id="navdrawer" fixed v-model="drawer" hide-overlay>
-      <menu-component :map="map" :dataLayers="dataLayers"> </menu-component>
-    </v-navigation-drawer>
-    <v-mapbox
-      :access-token="appConfig.MAPBOX_TOKEN"
-      :map-style="appConfig.map.background"
-      :center="appConfig.map.center"
-      :zoom="appConfig.map.zoom"
-      :pitch="0"
-      :bearing="0"
-      id="map"
-      ref="map"
+    <v-app-bar floating :clipped-left="true" app>
+      <v-app-bar-nav-icon @click="drawer = !drawer">
+        <v-icon>
+          menu
+        </v-icon>
+      </v-app-bar-nav-icon>
+      <v-toolbar-title
+        ><h3>{{ appConfig.title }}</h3></v-toolbar-title
+      >
+    </v-app-bar>
+    <v-navigation-drawer
+      width="400"
+      id="navdrawer"
+      clipped
+      fixed
+      v-model="drawer"
+      hide-overlay
     >
-    </v-mapbox>
+      <menu-component id="menu" :map="map" :dataLayers.sync="dataLayers">
+      </menu-component>
+    </v-navigation-drawer>
+    <v-content>
+      <v-mapbox
+        :access-token="appConfig.MAPBOX_TOKEN"
+        :map-style="appConfig.map.background"
+        :center="appConfig.map.center"
+        :zoom="appConfig.map.zoom"
+        :pitch="0"
+        :bearing="0"
+        id="map"
+        ref="map"
+      >
+      </v-mapbox>
+    </v-content>
   </v-app>
 </template>
 
@@ -43,7 +59,7 @@ export default {
     this.map.on('load', () => {
       this.map.addControl(new mapboxgl.NavigationControl())
       this.dataLayers.forEach(layer => {
-        layer['mapbox-layers'].forEach(maplayer => {
+        layer.data.forEach(maplayer => {
           this.map.addLayer(maplayer)
           console.log(this.map)
         })
@@ -59,12 +75,15 @@ export default {
 
 #map {
   width: 100%;
-  top: 64px;
-  height: calc(100% - 32px);
+  height: 100%;
 }
 #navdrawer {
-  top: 64px;
   z-index: 1;
+}
+
+#menu {
+  padding-top: 64px;
+  position: relative;
 }
 
 html,
