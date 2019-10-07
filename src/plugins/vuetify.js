@@ -6,7 +6,7 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 Vue.use(Vuetify)
 
 export default new Vuetify({
-  iconfont: 'mdi',
+  iconfont: 'md',
   theme: {
     dark: true
   }

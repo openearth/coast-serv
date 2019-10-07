@@ -32,6 +32,7 @@
         id="map"
         ref="map"
       >
+        <plotDialog :plotDialog.sync="plotDialog" />
       </v-mapbox>
     </v-content>
   </v-app>
@@ -41,28 +42,50 @@
 import mapboxgl from 'mapbox-gl'
 import MenuComponent from './components/MenuComponent'
 import { dataLayers } from './config/datalayers-config.js'
+import PlotDialog from './components/PlotDialog'
+import MapboxDraw from '@mapbox/mapbox-gl-draw'
+import DrawRectangle from 'mapbox-gl-draw-rectangle-mode'
+import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 
 export default {
   name: 'App',
   components: {
-    'menu-component': MenuComponent
+    MenuComponent,
+    PlotDialog
   },
   data() {
     return {
       drawer: true,
       map: null,
-      dataLayers: dataLayers
+      dataLayers: dataLayers,
+      plotDialog: false,
+      draw: {}
     }
   },
   mounted() {
     this.map = this.$refs.map.map
+    const modes = MapboxDraw.modes
+    modes.draw_rectangle = DrawRectangle
+
+    this.draw = new MapboxDraw({
+      modes: modes
+    })
+    console.log(this.draw, MapboxDraw)
+
     this.map.on('load', () => {
       this.map.addControl(new mapboxgl.NavigationControl())
+      // this.draw.changeMode('draw_rectangle')
+
+      this.map.addControl(this.draw, 'top-right')
       this.dataLayers.forEach(layer => {
         layer.data.forEach(maplayer => {
           this.map.addLayer(maplayer)
           console.log(this.map)
         })
+      })
+
+      this.map.on('click', () => {
+        this.plotDialog = true
       })
     })
   },

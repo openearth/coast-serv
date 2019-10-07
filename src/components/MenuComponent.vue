@@ -17,6 +17,7 @@
         <v-btn outlined block @click="exportDialog = true">
           EXPORT
         </v-btn>
+        <export-dialog :exportDialog.sync="exportDialog" v-if="exportDialog" />
       </v-flex>
     </v-layout>
   </div>
@@ -24,6 +25,7 @@
 
 <script>
 import DataLayers from './DataLayers'
+import ExportDialog from './ExportDialog'
 
 export default {
   name: 'map-component',
@@ -49,7 +51,8 @@ export default {
     }
   },
   components: {
-    DataLayers
+    DataLayers,
+    ExportDialog
   }
 }
 </script>

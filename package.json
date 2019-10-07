@@ -10,14 +10,18 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "@mapbox/mapbox-gl-draw": "^1.1.2",
     "core-js": "^2.6.5",
+    "echarts": "^4.3.0",
     "loader": "^2.1.1",
     "mapbox-gl": "^0.53.1",
+    "mapbox-gl-draw-rectangle-mode": "^1.0.4",
     "material-design-icons-iconfont": "^4.0.5",
     "register-service-worker": "^1.6.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "vue": "^2.6.10",
+    "vue-echarts": "^4.0.4",
     "vue2mapbox-gl": "^0.5.50",
     "vuedraggable": "^2.23.2",
     "vuetify": "^2.1.1",
