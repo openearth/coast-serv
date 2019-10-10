@@ -3,10 +3,15 @@
     <v-layout column fill-height justfy-space-around class="pa-4">
       <v-flex grow>
         <data-layers
-          :dataLayers="dataLayers"
+          :layers.sync="layers"
           :map="map"
           @data-layers="$emit('update:data-layers', dataLayers)"
         />
+      </v-flex>
+      <v-flex shrink class="pt-2">
+        <v-btn outlined block @click="plotDialog = true">
+          SHOW GRAPH
+        </v-btn>
       </v-flex>
       <v-flex shrink class="py-2">
         <v-btn outlined block>
@@ -18,6 +23,7 @@
           EXPORT
         </v-btn>
         <export-dialog :exportDialog.sync="exportDialog" v-if="exportDialog" />
+        <plotDialog :plotDialog.sync="plotDialog" />
       </v-flex>
     </v-layout>
   </div>
@@ -26,6 +32,7 @@
 <script>
 import DataLayers from './DataLayers'
 import ExportDialog from './ExportDialog'
+import PlotDialog from './PlotDialog'
 
 export default {
   name: 'map-component',
@@ -33,7 +40,7 @@ export default {
     map: {
       type: Object
     },
-    dataLayers: {
+    layers: {
       type: Array
     }
   },
@@ -41,18 +48,24 @@ export default {
     map: function(map) {
       this.map = map
     },
-    dataLayers: function(datalayers) {
-      console.log(datalayers)
+    layers: function(layers) {
+      console.log('layers', layers)
+      this.layers = layers
     }
+  },
+  mounted() {
+    console.log(this.layers)
   },
   data: () => {
     return {
-      exportDialog: false
+      exportDialog: false,
+      plotDialog: false
     }
   },
   components: {
     DataLayers,
-    ExportDialog
+    ExportDialog,
+    PlotDialog
   }
 }
 </script>

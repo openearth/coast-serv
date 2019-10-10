@@ -18,7 +18,7 @@
       v-model="drawer"
       hide-overlay
     >
-      <menu-component id="menu" :map="map" :dataLayers.sync="dataLayers">
+      <menu-component id="menu" :map="map" :layers.sync="dataLayers">
       </menu-component>
     </v-navigation-drawer>
     <v-content>
@@ -32,7 +32,6 @@
         id="map"
         ref="map"
       >
-        <plotDialog :plotDialog.sync="plotDialog" />
       </v-mapbox>
     </v-content>
   </v-app>
@@ -42,7 +41,6 @@
 import mapboxgl from 'mapbox-gl'
 import MenuComponent from './components/MenuComponent'
 import { dataLayers } from './config/datalayers-config.js'
-import PlotDialog from './components/PlotDialog'
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
 import DrawRectangle from 'mapbox-gl-draw-rectangle-mode'
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
@@ -50,15 +48,13 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 export default {
   name: 'App',
   components: {
-    MenuComponent,
-    PlotDialog
+    MenuComponent
   },
   data() {
     return {
       drawer: true,
       map: null,
       dataLayers: dataLayers,
-      plotDialog: false,
       draw: {}
     }
   },
@@ -73,19 +69,29 @@ export default {
     console.log(this.draw, MapboxDraw)
 
     this.map.on('load', () => {
+      // var drawBar = new extendDrawBar({
+      //   draw: this.draw,
+      //   buttons: [
+      //     {
+      //       on: 'click',
+      //       action:   this.draw.changeMode('draw_rectangle'),
+      //       classes: ['fa', 'fa-floppy-o']
+      //     }
+      //   ]
+      // });
+      //
+      // map.addControl(drawBar, 'top-right');
+
       this.map.addControl(new mapboxgl.NavigationControl())
-      // this.draw.changeMode('draw_rectangle')
 
       this.map.addControl(this.draw, 'top-right')
+      this.draw.changeMode('draw_rectangle')
+
       this.dataLayers.forEach(layer => {
         layer.data.forEach(maplayer => {
           this.map.addLayer(maplayer)
           console.log(this.map)
         })
-      })
-
-      this.map.on('click', () => {
-        this.plotDialog = true
       })
     })
   },

@@ -7,7 +7,7 @@
           <draggable
             id="draggable"
             class="draggable"
-            v-model="layers"
+            v-model="mapLayers"
             @start="drag = true"
             @end="drag = false"
             v-bind="{ handle: '.draghandle' }"
@@ -20,23 +20,11 @@
                       class="ma-2 draghandle"
                       id="dragicon"
                       title="Drag to change map layer drawing order"
-                      small
-                      >fa-grip-vertical</v-icon
+                      >drag_indicator</v-icon
                     >
                   </v-flex>
-                  <v-flex xs5 class="pa-1">
-                    {{ layer.name }}
-                  </v-flex>
-                  <v-flex xs1>
-                    <v-tooltip v-if="layer.timeslider" bottom>
-                      <template v-slot:activator="{ on }">
-                        <v-icon small v-on="on">fa-clock</v-icon>
-                      </template>
-                      <span
-                        >Deze laag is tijdsafhankelijk en kan bestuurd worden
-                        met de tijdsbalk.</span
-                      >
-                    </v-tooltip>
+                  <v-flex xs7 class="pa-1">
+                    {{ layer.title }}
                   </v-flex>
                   <v-flex xs2 @click.stop="">
                     <v-switch
@@ -46,12 +34,8 @@
                     />
                   </v-flex>
                   <v-flex>
-                    <v-icon
-                      class="ma-2"
-                      id="dragicon"
-                      title="Open details"
-                      small
-                      >fa-caret-down</v-icon
+                    <v-icon class="ma-2" id="dragicon" title="Open details"
+                      >keyboard_arrow_down</v-icon
                     >
                   </v-flex>
                 </v-layout>
@@ -97,7 +81,7 @@ import VLegend from './VLegend'
 
 export default {
   props: {
-    datLayers: {
+    layers: {
       type: Array
     },
     map: {
@@ -105,12 +89,12 @@ export default {
     }
   },
   computed: {
-    layers: {
+    mapLayers: {
       get() {
-        return this.dataLayers
+        return this.layers
       },
       set(val) {
-        this.$emit('update:data-layers', val)
+        this.$emit('update:layers', val)
       }
     }
   },
@@ -120,7 +104,7 @@ export default {
   watch: {
     // Watch "layers". This is a switch, which can toggle a layer on or off
     // When toggled, this watcher will activate the toggleLayers function.
-    dataLayers: {
+    layers: {
       deep: true,
       handler() {
         if (!this.layers) return
@@ -221,7 +205,6 @@ export default {
     word-wrap: break-word; /* IE */
   }
 }
-
 /* Customize the switch buttons */
 .v-input--selection-controls:not(.v-input--hide-details) .v-input__slot {
   margin: auto;
@@ -260,9 +243,5 @@ export default {
 .v-input--switch.v-input--is-dirty .v-input--switch__thumb {
   -webkit-transform: translate(20px, 0);
   transform: translate(20px, 0);
-}
-
-.theme--light.v-input--switch__thumb {
-  color: #f8f8f8;
 }
 </style>

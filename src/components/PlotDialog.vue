@@ -77,6 +77,6 @@ export default {
 <style>
 .echarts {
   width: 100%;
-  height: 100%;
+  height: 370px;
 }
 </style>
