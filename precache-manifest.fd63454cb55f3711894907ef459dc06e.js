@@ -8,11 +8,11 @@ self.__precacheManifest = [
     "url": "/coast-serv/js/chunk-vendors.3d792cc4.js"
   },
   {
-    "revision": "182d1cf6ad8f2bf04716",
-    "url": "/coast-serv/js/app.66ef64ab.js"
+    "revision": "b92ed8ddfa554325ddd0",
+    "url": "/coast-serv/js/app.49dca7e8.js"
   },
   {
-    "revision": "64504d3b1648fdf725c90bba3f9f0616",
+    "revision": "1bff840d15abfd47407b0bd2f11a9fce",
     "url": "/coast-serv/index.html"
   },
   {
@@ -36,7 +36,7 @@ self.__precacheManifest = [
     "url": "/coast-serv/css/chunk-vendors.64a67a4e.css"
   },
   {
-    "revision": "182d1cf6ad8f2bf04716",
+    "revision": "b92ed8ddfa554325ddd0",
     "url": "/coast-serv/css/app.cd6d64e0.css"
   }
 ];
