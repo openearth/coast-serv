@@ -1,6 +1,6 @@
 const config = {
   MAPBOX_TOKEN:
-    'pk.eyJ1IjoiY2FtdmR2cmllcyIsImEiOiJjajA4NXdpNmswMDB2MzNzMjk4dGM2cnhzIn0.lIwd8N7wf0hx7mq-kjTcbQ',
+    'pk.eyJ1IjoiY29hc3RzZXJ2IiwiYSI6ImNrMWtyYzhsczBlNG8zZHBibDlndjZ3ZDIifQ.60NT50XI55H3VZ-ptXmWWg',
   title: 'COASTSERV',
   map: {
     background: 'mapbox://styles/mapbox/dark-v9',

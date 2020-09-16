@@ -47,6 +47,15 @@
                 hide-actions
               >
                 <div class="pa-2">
+                  <div v-if="layer.timelayers">
+                    <v-select
+                      :items="layer.timelayers"
+                      label="Select Time"
+                      item-value="time"
+                      item-text="time"
+                      @change="updateTimeLayer(layer, $event)"
+                    ></v-select>
+                  </div>
                   <div class="infodiv" v-if="layer.info">
                     <h4>Information</h4>
                     {{ layer.info }}
@@ -98,9 +107,6 @@ export default {
       }
     }
   },
-  data() {
-    return {}
-  },
   watch: {
     // Watch "layers". This is a switch, which can toggle a layer on or off
     // When toggled, this watcher will activate the toggleLayers function.
@@ -114,6 +120,34 @@ export default {
     }
   },
   methods: {
+    updateTimeLayer(layer, time) {
+      console.log(layer.id)
+      this.layers.forEach(l => {
+        if (layer.id !== l.id) return
+        l.timelayers.forEach(tl => {
+          if (time === tl.time) {
+            l.data[0].id = `${l.id}_${tl.time}`
+            l.data[0].source.url = tl.url
+            l.data[0]['source-layer'] = tl.source
+            console.log('visib;e', `${l.id}_${tl.time}`)
+            this.map.setLayoutProperty(
+              `${l.id}_${time}`,
+              'visibility',
+              'visible'
+            )
+          } else {
+            console.log('none', `${l.id}_${tl.time}`)
+
+            this.map.setLayoutProperty(
+              `${l.id}_${tl.time}`,
+              'visibility',
+              'none'
+            )
+          }
+        })
+      })
+      this.setOpacity(layer, layer.data[0])
+    },
     toggleLayers() {
       // Function to toggle the visibility and opacity of the layers.
       var vis = ['none', 'visible']

@@ -1,3 +1,3 @@
 module.exports = {
-  publicPath: 'coast-serv'
+  publicPath: process.env.NODE_ENV === 'production' ? 'coast-serv' : '/'
 }

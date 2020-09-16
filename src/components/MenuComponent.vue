@@ -8,22 +8,16 @@
           @data-layers="$emit('update:data-layers', dataLayers)"
         />
       </v-flex>
+      <v-flex grow>
+        <import-layers :map="map" />
+      </v-flex>
+      <v-flex grow>
+        <export-layers :map="map" />
+      </v-flex>
       <v-flex shrink class="pt-2">
         <v-btn outlined block @click="plotDialog = true">
           SHOW GRAPH
         </v-btn>
-      </v-flex>
-      <v-flex shrink class="py-2">
-        <v-btn outlined block>
-          IMPORT POLYGON
-        </v-btn>
-      </v-flex>
-      <v-flex shrink class="pb-4">
-        <v-btn outlined block @click="exportDialog = true">
-          EXPORT
-        </v-btn>
-        <export-dialog :exportDialog.sync="exportDialog" v-if="exportDialog" />
-        <plotDialog :plotDialog.sync="plotDialog" />
       </v-flex>
     </v-layout>
   </div>
@@ -31,8 +25,11 @@
 
 <script>
 import DataLayers from './DataLayers'
-import ExportDialog from './ExportDialog'
-import PlotDialog from './PlotDialog'
+import exportLayers from './ExportLayers'
+import ImportLayers from './ImportLayers'
+import exportDialog from './ExportDialog'
+import plotDialog from './PlotDialog'
+import FileReader from 'filereader'
 
 export default {
   name: 'map-component',
@@ -64,8 +61,10 @@ export default {
   },
   components: {
     DataLayers,
-    ExportDialog,
-    PlotDialog
+    exportDialog,
+    plotDialog,
+    exportLayers,
+    ImportLayers
   }
 }
 </script>

@@ -66,7 +66,6 @@ export default {
     this.draw = new MapboxDraw({
       modes: modes
     })
-    console.log(this.draw, MapboxDraw)
 
     this.map.on('load', () => {
       // var drawBar = new extendDrawBar({
@@ -85,13 +84,23 @@ export default {
       this.map.addControl(new mapboxgl.NavigationControl())
 
       this.map.addControl(this.draw, 'top-right')
-      this.draw.changeMode('draw_rectangle')
+      // this.draw.changeMode('draw_rectangle')
 
       this.dataLayers.forEach(layer => {
-        layer.data.forEach(maplayer => {
-          this.map.addLayer(maplayer)
-          console.log(this.map)
-        })
+        if (layer.timelayers) {
+          layer.timelayers.forEach(timeLayer => {
+            layer.data[0].id = `${layer.id}_${timeLayer.time}`
+            layer.data[0].source.url = timeLayer.url
+            layer.data[0]['source-layer'] = timeLayer.source
+            console.log(layer.data[0].id, layer.data[0])
+            this.map.addLayer(layer.data[0])
+          })
+        }
+        if (layer.type === 'datalayers') {
+          layer.data.forEach(maplayer => {
+            this.map.addLayer(maplayer)
+          })
+        }
       })
     })
   },
