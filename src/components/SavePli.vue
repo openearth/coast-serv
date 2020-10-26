@@ -59,14 +59,10 @@ export default {
   },
   methods: {
     downloadOnClick() {
-      console.log('I will download the pli')
-      console.log(this.coordinates)
       let rows = ``
       this.coordinates[0].forEach(coord => {
         console.log('coord', coord)
         let row =  `\t${coord[0]}\t${coord[1]}\n`
-        console.log('row')
-        console.log(row)
         rows = rows + row
       })
       const fileName = 'polygon'
