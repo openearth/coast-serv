@@ -14,6 +14,12 @@
       "2010-04-04",
       "2010-04-05"
     ],
+    "bbox": [
+      -5.125,
+      48.875,
+      10.125,
+      60.125
+    ],
     "original": {
       "id": "original_chl_north_sea",
       "name": "North Sea Chlorophyll - Original",
