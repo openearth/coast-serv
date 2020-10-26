@@ -6,22 +6,21 @@
     :zoom="appConfig.map.zoom"
     :pitch="0"
     :bearing="0"
-    id="map"
-    ref="map"
+    id="before"
   >
   </v-mapbox>
 </template>
 
 <script>
 export default {
-  name: 'MapComponent',
+  name: "MapComponent",
   props: {
     map: {
       type: Object,
       requrired: true
     }
   }
-}
+};
 </script>
 
 <style>
