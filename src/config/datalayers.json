@@ -1,0 +1,27 @@
+[
+  {
+    "id": "stat_downscale_chl_north_sea",
+    "name": "North Sea Chlfa - Statistical downscaled",
+    "layer": "coastserv:statistical_downscale_north_sea_timeseries",
+    "url": "http://localhost:8081/geoserver/ows",
+    "visibility": "visible",
+    "time": "2010-04-01",
+    "active": false,
+    "time_extend": [
+      "2010-04-01",
+      "2010-04-02",
+      "2010-04-03",
+      "2010-04-04",
+      "2010-04-05"
+    ],
+    "original": {
+      "id": "original_chl_north_sea",
+      "name": "North Sea Chlorophyll - Original",
+      "layer": "coastserv:original_chl_north_sea_timeseries",
+      "url": "http://localhost:8081/geoserver/ows",
+      "visibility": "none",
+      "time": "2010-04-01"
+    },
+    "info": "Using a PLS regression method, the Global Reanalysis Biology Hindcast model for surface chlorophyll-a concentrations (GLOBAL_REANALYSIS_BIO_001_029-TDS) was downscaled from ~25km to 4km resolution."
+  }
+]
