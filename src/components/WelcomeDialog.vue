@@ -11,23 +11,20 @@
         <v-toolbar-title>COASTSERV User Agreement Deltares</v-toolbar-title>
       </v-card-title>
 
-      <div class="px-5 flex-grow-1 overflow-y-auto" v-html="testText" />
+      <div class="px-5 flex-grow-1 overflow-y-auto" v-html="content" />
 
       <v-card-actions>
         <div class="pa-2" style="width:100%">
-          <form action submit.prevent>
+          <form action="" submit.prevent>
             <v-checkbox
               label="I agree with the Conditions of Use"
               class="ma-0"
-              color="info"
               v-model="accepted1"
-              hide-details
             />
             <v-checkbox
               label="I consent with the use of cookies"
               class="ma-0"
               v-model="accepted2"
-              hide-details
             />
           </form>
           <div class="mt-2 d-flex">
@@ -54,9 +51,7 @@ export default {
     content,
     accepted1: false,
     accepted2: false,
-    testText:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Corruptinostrum voluptates molestias dolorem iste, voluptas natus quibusdamculpa debitis velit neque. Tenetur quod saepe, minus in suntconsectetur veritatis non."
-  }),
+     }),
   computed: {
     ...mapState({
       acceptedLegal: state => state.acceptedLegal
@@ -77,7 +72,8 @@ export default {
 };
 </script>
 <style>
-.v-input--selection-controls__input {
-  border: blue;
+.v-input--selection-controls__input input[role=checkbox]{
+  opacity:0.6;
 }
 </style>
+
