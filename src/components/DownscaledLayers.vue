@@ -19,7 +19,12 @@
                   {{ layer.name }}
                 </v-flex>
                 <v-flex xs2 @click.stop="">
-                    <v-switch 
+                    <v-switch v-if="layer.type"
+                      class="ma-0"
+                      v-model="layer.active"
+                      @change="setmapboxlayer(layer)"
+                    ></v-switch>
+                      <v-switch v-else
                       class="ma-0"
                       v-model="layer.active"
                       @change="setwmslayer(layer)"
@@ -73,6 +78,9 @@ export default {
     visibility: {
       type: Boolean
       },
+    map: {
+      type: Object
+    },
   },
   data() {
     return {
@@ -111,6 +119,21 @@ export default {
         this.$store.commit("REMOVE_WMS_LAYER", layer.id) 
         this.$store.commit("REMOVE_COMPARE_LAYER", layer.id)
         this.$store.commit("REMOVE_WMS_LAYER", layer.original.id)
+      }
+    },
+
+    setmapboxlayer(layer) {
+      if (layer.active) {
+        if (!this.map.getLayer(layer.id)) {
+          this.map.addLayer(
+           layer.data)
+        }
+        else {
+          this.map.setLayoutProperty(layer.id, 'visibility', 'visible')
+        }
+      }
+      else {
+        this.map.setLayoutProperty(layer.id, 'visibility', 'none')
       }
     },
   
