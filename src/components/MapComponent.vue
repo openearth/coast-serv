@@ -6,7 +6,6 @@
     :zoom="appConfig.map.zoom"
     :pitch="0"
     :bearing="0"
-    id="before"
   >
   </v-mapbox>
 </template>
