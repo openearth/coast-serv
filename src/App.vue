@@ -7,9 +7,15 @@
           menu
         </v-icon>
       </v-app-bar-nav-icon>
+      <div class="logo">
+        <img src="@/assets/coastserv_logo.png" width="40px" margin-right="10px">
+      </div>
       <v-toolbar-title
         ><h3>{{ appConfig.title }}</h3>
       </v-toolbar-title>
+      <div class="subtitle"> 
+        <h3 style="color: white"> The Coastserv Service is generated using E.U. Copernicus Marine Service Information.</h3>
+      </div>
       <v-spacer></v-spacer>
       <h2 class="pr-5">Compare with original</h2>
       <compare-layers
@@ -28,7 +34,7 @@
     >
       <menu-component id="menu" :map="map" :layers.sync="dataLayers" :visibility="visibility">
       </menu-component>
-      <save-pli :savePli.sync="savePli" :coordinates="coordinates"></save-pli>
+      <save-pli-file :savePli.sync="savePli" :coordinates="coordinates"></save-pli-file>
     </v-navigation-drawer>
     <v-content >
       <v-mapbox
@@ -60,7 +66,7 @@ import MapboxDraw from '@mapbox/mapbox-gl-draw'
 import WelcomeDialog from './components/WelcomeDialog'
 import MapLayer from './components/MapLayer'
 import CompareLayers from './components/CompareLayers'
-import SavePli from './components/SavePli'
+import SavePliFile from './components/SavePliFile'
 
 
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
@@ -73,7 +79,7 @@ export default {
     WelcomeDialog,
     MapLayer,
     CompareLayers,
-    SavePli
+    SavePliFile
   },
   data() {
     return {
@@ -87,18 +93,9 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      acceptedLegal: state => state.acceptedLegal,
-      compareLayers: state => state.compareLayers
-    }),
-    ...mapGetters({
-      wmsLayers: 'wmsLayers',
-    }),
+    ...mapState(['acceptedLegal', 'compareLayers']),
+    ...mapGetters(['wmsLayers'])
   },
-/*   watch: {
-    wmsLayers() {
-      this.sortLayers() 
-  }, */
   mounted() {
     this.map = this.$refs.map.map
     this.draw = new MapboxDraw({
@@ -121,14 +118,11 @@ export default {
   methods: {
     onUpdateVisibility(visibility) {
       this.visibility = visibility
-      console.log('visibility', visibility)
     },
     updateGeojson(){ 
       const data = this.draw.getAll()
       if (data.features.length) {
-        console.log('data', data)
         this.coordinates = data.features[0].geometry.coordinates
-        console.log('this.coordinates', this.coordinates)
         this.savePli = true
       }
     }
@@ -170,5 +164,10 @@ body {
   width: 100%;
   height: 100%;
 }
-
+.logo { 
+  margin-right: 10px;
+}
+.subtitle {
+  margin-left: 10px;
+}
 </style>
