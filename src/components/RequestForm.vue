@@ -85,7 +85,6 @@ export default {
         return this.requestForm;
       },
       set(val) {
-        console.log('val',val)
         this.$emit("update:request-form", val);
       }
     }

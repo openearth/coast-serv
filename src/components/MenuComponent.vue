@@ -2,13 +2,11 @@
   <div id="menu">
     <v-layout column fill-height justfy-space-around class="pa-4">
       <v-flex grow>
-<!--         <data-layers
-          :layers.sync="layers"
-          :map="map"
-          @data-layers="$emit('update:data-layers', dataLayers)"
-        /> -->
+        <div>
+        </div>
         <downscaled-layers
           :visibility="visibility"
+          :map="map"
         >
         </downscaled-layers>
       </v-flex>
@@ -56,12 +54,8 @@ export default {
       this.map = map;
     },
     layers: function(layers) {
-      /* console.log("layers", layers); */
       this.layers = layers;
     }
-  },
-  mounted() {
-    /* console.log(this.layers); */
   },
   data: () => {
     return {
@@ -71,8 +65,6 @@ export default {
   },
   components: {
     DownscaledLayers,
-    /* exportDialog, */
-    /* plotDialog, */
     exportLayers,
     ImportLayers,
     RequestService,

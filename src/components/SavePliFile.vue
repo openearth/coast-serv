@@ -42,26 +42,19 @@ export default {
   },
   computed: {
       saveOn: {
-          saveOnClick() {
-            console.log('value of savePli', this.savePli)
-          },
+
           get() { 
               return this.savePli;
           },
           set(val) {
-            console.log('emit,val', val)
             this.$emit("update:save-pli", val);
       }
       }
-  },
-  mounted() {
-    console.log('this.coordinates', this.coordinates)
   },
   methods: {
     downloadOnClick() {
       let rows = ``
       this.coordinates[0].forEach(coord => {
-        console.log('coord', coord)
         let row =  `\t${coord[0]}\t${coord[1]}\n`
         rows = rows + row
       })
