@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "coast-serv/precache-manifest.2c4860df0f6effc85bbc42f1af405926.js"
+  "/precache-manifest.aa6499153fd2187c4aa7cee721e5ca70.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "coast-serv"});
