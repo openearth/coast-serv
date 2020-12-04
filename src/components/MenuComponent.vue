@@ -2,14 +2,19 @@
   <div id="menu">
     <v-layout column fill-height justfy-space-around class="pa-4">
       <v-flex grow>
-        <data-layers
-          :layers.sync="layers"
+        <div>
+        </div>
+        <downscaled-layers
+          :visibility="visibility"
           :map="map"
-          @data-layers="$emit('update:data-layers', dataLayers)"
-        />
+        >
+        </downscaled-layers>
       </v-flex>
       <v-flex grow>
         <import-layers :map="map" />
+      </v-flex>
+      <v-flex grow>
+        <request-service></request-service>
       </v-flex>
       <v-flex grow>
         <export-layers :map="map" />
@@ -24,53 +29,51 @@
 </template>
 
 <script>
-import DataLayers from './DataLayers'
-import exportLayers from './ExportLayers'
-import ImportLayers from './ImportLayers'
-import exportDialog from './ExportDialog'
-import plotDialog from './PlotDialog'
-import FileReader from 'filereader'
+import exportLayers from "./ExportLayers";
+import ImportLayers from "./ImportLayers";
+/* import exportDialog from "./ExportDialog";
+import plotDialog from "./PlotDialog"; */
+import RequestService from "./RequestService";
+import DownscaledLayers from "./DownscaledLayers";
 
 export default {
-  name: 'map-component',
+  name: "map-component",
   props: {
     map: {
       type: Object
     },
     layers: {
       type: Array
+    },
+    visibility: { 
+      type: Boolean
     }
   },
   watch: {
     map: function(map) {
-      this.map = map
+      this.map = map;
     },
     layers: function(layers) {
-      console.log('layers', layers)
-      this.layers = layers
+      this.layers = layers;
     }
-  },
-  mounted() {
-    console.log(this.layers)
   },
   data: () => {
     return {
       exportDialog: false,
       plotDialog: false
-    }
+    };
   },
   components: {
-    DataLayers,
-    exportDialog,
-    plotDialog,
+    DownscaledLayers,
     exportLayers,
-    ImportLayers
+    ImportLayers,
+    RequestService,
   }
-}
+};
 </script>
 
 <style>
-@import '~mapbox-gl/dist/mapbox-gl.css';
+@import "~mapbox-gl/dist/mapbox-gl.css";
 
 #menu {
   height: 100%;

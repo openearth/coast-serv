@@ -1,0 +1,85 @@
+[
+  {
+    "id": "stat_downscale_chl_north_sea",
+    "name": "North Sea Chlfa - Statistical downscaled",
+    "layer": "coastserv:statistical_downscale_north_sea_timeseries",
+    "url": "https://deltaresdata.openearth.eu/geoserver/ows",
+    "visibility": "visible",
+    "time": "2010-04-01",
+    "active": false,
+    "time_extend": [
+      "2010-04-01",
+      "2010-04-02",
+      "2010-04-03",
+      "2010-04-04",
+      "2010-04-05"
+    ],
+    "bbox": [
+      -5.125,
+      48.875,
+      10.125,
+      60.125
+    ],
+    "original": {
+      "id": "original_chl_north_sea",
+      "name": "North Sea Chlorophyll - Original",
+      "layer": "coastserv:original_chl_north_sea_timeseries",
+      "url": "https://deltaresdata.openearth.eu/geoserver/ows",
+      "visibility": "none",
+      "time": "2010-04-01"
+    },
+    "info": "Using a PLS regression method, the Global Reanalysis Biology Hindcast model for surface chlorophyll-a concentrations (GLOBAL_REANALYSIS_BIO_001_029-TDS) was downscaled from ~25km to 4km resolution."
+  },
+  {
+    "id": "downscaled_temperature_ethekwini_timeseries",
+    "name": "Ethekwini  Temperature - downscaled",
+    "layer": "coastserv:downscaled_temperature_ethekwini_timeseries",
+    "url": "https://deltaresdata.openearth.eu/geoserver/ows",
+    "visibility": "visible",
+    "time": "2010-04-01",
+    "active": false,
+    "time_extend": [
+      "2010-04-01",
+      "2010-04-02",
+      "2010-04-03",
+      "2010-04-04",
+      "2010-04-05"
+    ],
+    "bbox": [
+      28.9,
+      -38.9,
+      34.15,
+      -26.45
+    ],
+    "original": {
+      "id": "original_temperature_ethekwini_timeseries",
+      "name": "Ethekwini  Temperature - original",
+      "layer": "coastserv:original_temperature_ethekwini_timeseries",
+      "url": "https://deltaresdata.openearth.eu/geoserver/ows",
+      "visibility": "none",
+      "time": "2010-04-01"
+    },
+    "info": "Using a PLS regression method, the Global Reanalysis Biology Hindcast model for surface chlorophyll-a concentrations (GLOBAL_REANALYSIS_BIO_001_029-TDS) was downscaled from ~25km to 4km resolution."
+  },
+  {
+    "id": "grid",
+    "name": "Model grid",
+    "active": false,
+    "data": {
+      "id": "grid",
+      "type": "line",
+      "source": {
+        "type": "vector",
+        "url": "mapbox://coastserv.8cc2ngp3"
+      },
+      "source-layer": "Topology_data_of_2D_network-b4wqd0",
+      "paint": {
+        "line-color": "#008080"
+      },
+      "layout": {
+        "visibility": "visible"
+      }
+    },
+    "type": "mapbox"
+  }
+]
